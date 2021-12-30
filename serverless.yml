@@ -1,0 +1,58 @@
+service: image-thumbnail
+
+frameworkVersion: '2 || 3'
+
+custom:
+  bucket: test-demo15
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: ap-south-1
+  profile: abc
+  iam: 
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:PutObject"
+          Resource:
+            - arn:aws:s3:::${self:custom.bucket}
+            - arn:aws:s3:::${self:custom.bucket}/*
+  lambdaHashingVersion: 20201221
+
+useDotenv: true
+
+package: 
+  individually: true
+  patterns:
+    - "!node_modules/**"
+    - "!package.json"
+    - "!resources"
+    - "!.serverless/**"
+    - "!.gitignore"
+    - "!.env"
+    - "!requirements.in"
+    - "!requirements.txt"
+    - "!venv"
+    - "!package-lock.json"
+    - "!yarn.lock"
+  excludeDevDependencies: true
+
+functions:
+  imageThumbnail:
+    handler: thumbnail.main
+    layers:
+      - arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-python38-Pillow:14
+    package: {}
+    events:
+      - s3: 
+          bucket: ${self:custom.bucket}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+
+plugins:
+  - serverless-python-requirements

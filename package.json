@@ -1,0 +1,9 @@
+{
+  "name": "image-thumbnail",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-python-requirements": "^5.2.2"
+  }
+}
