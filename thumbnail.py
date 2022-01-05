@@ -8,11 +8,13 @@ def main(event, context):
     s3_res = boto3.resource("s3")
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
     key = event["Records"][0]["s3"]["object"]["key"]
+
     _name = key.split("/")
     name = _name[1]
     path = f"/tmp/{name}"
     print(path)
     os.makedirs(temp_folder_name, exist_ok=True)
+    
     print("downloading file")
     response = s3_res.meta.client.download_file(bucket_name,key, path)
     print(response)
