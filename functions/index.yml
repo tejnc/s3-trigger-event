@@ -1,0 +1,23 @@
+imageThumbnail:
+    handler: thumbnail.main
+    layers:
+      - arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-python38-Pillow:14
+    package: {}
+    events:
+      - s3: 
+          bucket: ${self:custom.bucket}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+
+JsonToExcel:
+  handler: functions/json_to_excel.main
+  description: api for admin to generate excel file
+  layers:
+    - arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-python38-openpyxl:9
+  package: {}
+  events:
+    - http:
+        path: admin/json-excel
+        method: get
+        cors: true

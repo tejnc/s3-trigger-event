@@ -22,6 +22,9 @@ provider:
             - arn:aws:s3:::${self:custom.bucket}
             - arn:aws:s3:::${self:custom.bucket}/*
   lambdaHashingVersion: 20201221
+  environment:
+    STAGE: ${env:STAGE}
+    PASS_NEW: ${env:PASS_NEW}
 
 useDotenv: true
 
@@ -39,20 +42,13 @@ package:
     - "!venv"
     - "!package-lock.json"
     - "!yarn.lock"
+    - "!rough.py"
   excludeDevDependencies: true
 
 functions:
-  imageThumbnail:
-    handler: thumbnail.main
-    layers:
-      - arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-python38-Pillow:14
-    package: {}
-    events:
-      - s3: 
-          bucket: ${self:custom.bucket}
-          event: s3:ObjectCreated:*
-          rules:
-            - prefix: uploads/
+  - ${file(functions/index.yml)}
 
 plugins:
   - serverless-python-requirements
+  - serverless-offline
+  
