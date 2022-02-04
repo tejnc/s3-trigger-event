@@ -21,3 +21,4 @@ var/
 venv
 node_modules
 requirements.in
+.env
