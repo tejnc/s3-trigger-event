@@ -1,5 +1,5 @@
+from mongoengine.fields import DateTimeField, DictField, IntField, StringField
 from mongoengine_goodjson import Document
-from mongoengine.fields import DateTimeField, StringField, DictField, IntField
 
 
 # Payment information of meroshare and demat
