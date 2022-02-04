@@ -43,6 +43,7 @@ package:
     - "!package-lock.json"
     - "!yarn.lock"
     - "!rough.py"
+    - "!.mypy_cache"
   excludeDevDependencies: true
 
 functions:
